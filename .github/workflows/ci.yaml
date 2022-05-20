@@ -13,13 +13,13 @@ jobs:
         id: app-name
         run: |
           repo_name=${{ github.event.repository.name }}
-          clean_repo_name=${repo_name/-/ }
-          echo "::set-output name=repo_name::$clean_repo_name"
+          clean_repo_name="${repo_name/-/ }""
+          echo "::set-output name=app_name::$clean_repo_name"
         
 
       - name: Check App name
         run: |
-          echo $CLEAN_REPO_NAME
+          echo $APP_NAME
       
         env:
-         CLEAN_REPO_NAME: ${{steps.app-name.outputs.repo_name}}
+         APP_NAME: ${{steps.app-name.outputs.app_name}}
