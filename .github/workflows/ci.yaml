@@ -17,3 +17,6 @@ jobs:
       - name: Check App name
         run: |
           echo $clean_repo_name
+      
+        env:
+         CLEAN_REPO_NAME: $clean_repo_name
