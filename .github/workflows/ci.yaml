@@ -19,4 +19,4 @@ jobs:
           echo $CLEAN_REPO_NAME
       
         env:
-         CLEAN_REPO_NAME: ${{clean_repo_name}}
+         CLEAN_REPO_NAME: $clean_repo_name
