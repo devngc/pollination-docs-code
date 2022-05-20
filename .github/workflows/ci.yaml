@@ -11,8 +11,9 @@ jobs:
 
       - name: Generate App name
         run: |
-          repo_name="${{ github.event.repository.name }}""
-          echo $repo_name
-          clean_repo_name="${repo_name/-/ }""
-          echo $clean_repo_name
+          repo_name=${{ github.event.repository.name }}
+          clean_repo_name=${repo_name/-/ }
 
+      - name: Check App name
+        run: |
+          echo $clean_repo_name
