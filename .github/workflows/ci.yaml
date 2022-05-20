@@ -10,13 +10,16 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Generate App name
+        id: app-name
         run: |
           repo_name=${{ github.event.repository.name }}
-          clean_repo_name="${repo_name/-/ }"
+          clean_repo_name=${repo_name/-/ }
+          echo "::set-output name=repo_name::$clean_repo_name"
+        
 
       - name: Check App name
         run: |
           echo $CLEAN_REPO_NAME
       
         env:
-         CLEAN_REPO_NAME: $clean_repo_name
+         CLEAN_REPO_NAME: ${{steps.app-name.outputs.repo_name}}
