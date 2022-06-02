@@ -1,5 +1,5 @@
 
-import uuid
+
 import json
 import streamlit as st
 from typing import List
@@ -8,9 +8,15 @@ from honeybee.model import Model as HBModel
 from pollination_streamlit_io import button, inputs, special
 
 
-def rhino_hbjson(hb_model: HBModel, label: str = 'View model',
+def rhino_hbjson(hb_model: HBModel, label: str = 'Preview model',
                  key: str = 'model') -> None:
-    """Visualize and bake HBJSON in rhino."""
+    """Visualize and bake HBJSON in rhino.
+
+    args:
+        hb_model: A honeybee model.
+        label: Label of the button. Defaults to 'Preview model'.
+        key: Key of the button. Defaults to 'model'.
+    """
 
     if not st.session_state.host == 'rhino':
         return
@@ -20,7 +26,7 @@ def rhino_hbjson(hb_model: HBModel, label: str = 'View model',
     with col1:
         inputs.send(
             data=hb_model.to_dict(),
-            unique_id=str(uuid.uuid4()),
+            unique_id='preview-model',
             default_checked=True,
             is_pollination_model=True,
             label=label,
@@ -31,7 +37,7 @@ def rhino_hbjson(hb_model: HBModel, label: str = 'View model',
         button.send(
             action='BakePollinationModel',
             data=hb_model.to_dict(),
-            unique_id=str(uuid.uuid4()),
+            unique_id='bake-model',
             options={
                 "layer": "hbjson",
                 "units": "Meters"
@@ -78,7 +84,7 @@ def rhino_mesh(hb_model: HBModel, results_folder: Path, result_name: str) -> Non
     with col1:
         inputs.send(
             data=result_json,
-            unique_id=str(uuid.uuid4()),
+            unique_id='preview-mesh',
             default_checked=True,
             label=result_name,
             delay=1000,
@@ -89,7 +95,7 @@ def rhino_mesh(hb_model: HBModel, results_folder: Path, result_name: str) -> Non
         button.send(
             action='BakeGeometry',
             data=result_json,
-            unique_id=f'bake_grid_{result_name}',
+            unique_id=f'bake_{result_name}',
             key=result_name)
 
 

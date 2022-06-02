@@ -14,15 +14,15 @@ class SimStatus(Enum):
     CANCELLED = 4
 
 
-def get_job_status(owner: str, project: str, job_id: str,
-                   api_client: ApiClient) -> Tuple[SimStatus, str]:
+def get_job_status(api_key: str, owner: str, project: str,
+                   job_id: str) -> Tuple[SimStatus, str]:
     """Get the status of a job from Pollination.
 
     args:
+        api_key: The API key of the user.
         owner: The owner of the Pollination account.
         project: The name of the project inside which the job was created.
         job_id: The id of the job.
-        api_client: An ApiClient object.
 
     returns:
         A tuple of two items:
@@ -35,7 +35,7 @@ def get_job_status(owner: str, project: str, job_id: str,
     job = Job(owner,
               project,
               job_id,
-              client=api_client)
+              client=ApiClient(api_token=api_key))
 
     url = f'https://app.pollination.cloud/projects/{owner}/{project}/jobs/{job_id}'
 
@@ -66,7 +66,6 @@ with st.form('job-status'):
         label='Submit')
 
     if submit_button:
-        status, url = get_job_status(owner, project, job_id,
-                                     ApiClient(api_token=api_key))
+        status, url = get_job_status(api_key, owner, project, job_id)
         st.write(f'Job status: {status.name}')
         st.markdown(f'Job URL: {url}')
