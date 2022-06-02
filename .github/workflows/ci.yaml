@@ -24,3 +24,33 @@ jobs:
       
         env:
          APP_NAME: ${{steps.app-name.outputs.app_name}}
+
+  
+  release-on-github:
+    name: Deploy to GitHub
+    runs-on: ubuntu-latest
+    needs: test-docker
+    if: github.ref == 'refs/heads/master' && github.event.repository.owner.name == 'pollination-apps'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: set up node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14.2.0
+
+      - name: install semantic-release
+        run: npm install @semantic-release/exec
+
+      - name: run semantic release
+        id: new_release
+        run: |
+          nextRelease="`npx semantic-release@^17.0.0 --dryRun | grep -oP 'Published release \K.*? ' || true`"
+          npx semantic-release@^17.0.0
+          echo "::set-output name=tag::$nextRelease"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    outputs:
+      tag: ${{ steps.new_release.outputs.tag }}
