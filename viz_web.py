@@ -1,5 +1,5 @@
-from streamlit_vtkjs import st_vtkjs
+from pollination_streamlit_viewer import viewer
 from pathlib import Path
 
 vtkjs_path = Path('daylight_factor.vtkjs')
-st_vtkjs(content=vtkjs_path.read_bytes(), key='df')
+viewer(content=vtkjs_path.read_bytes(), key='df')

@@ -5,7 +5,7 @@ from ladybug.epw import EPW
 
 
 st.set_page_config(
-    page_title='Dry bulb temperature', layout='wide'
+    page_title='Wind rose', layout='wide'
 )
 
 
